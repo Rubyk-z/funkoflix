@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Funko Store{% endblock %}</title>
+
+    {# El ?v=2 fuerza a recargar el CSS si el navegador lo tiene cacheado. #}
+    {# Si en el futuro hacés cambios grandes al CSS, subí el número (v=3, v=4...) #}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=2">
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    {# ========== HEADER / NAVBAR ========== #}
+    <header class="navbar">
+        <div class="navbar-content">
+            <a href="{% url 'Funkos:home' %}" class="logo">
+                <span class="logo-text">FUNKO</span><span class="logo-accent">STORE</span>
+            </a>
+
+            {# Los links del catálogo SOLO se muestran si el usuario está logueado #}
+            {% if user.is_authenticated %}
+                <nav class="nav-links">
+                    <a href="{% url 'Funkos:catalogo' %}">Catálogo</a>
+                    <a href="{% url 'Funkos:categorias' %}">Categorías</a>
+                    <a href="{% url 'Funkos:exclusivos' %}">Exclusivos</a>
+                    <a href="{% url 'Funkos:search' %}" class="nav-search-icon" title="Buscar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </a>
+                </nav>
+            {% else %}
+                {# Spacer para que el navbar mantenga el layout cuando no hay links #}
+                <div style="flex: 1;"></div>
+            {% endif %}
+
+            <div class="nav-actions">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'Funkos:mi_cuenta' %}" class="user-greeting">
+                        {{ user.username }}
+                    </a>
+                    <form action="{% url 'logout' %}" method="post" style="display:inline; margin:0;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline">Cerrar sesión</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-ghost">Iniciar sesión</a>
+                    <a href="{% url 'Funkos:register' %}" class="btn btn-primary">Registrarse</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+
+    {# ========== MENSAJES FLASH ========== #}
+    {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+                <div class="message message-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+
+    {# ========== CONTENIDO ========== #}
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+
+    {# ========== FOOTER ========== #}
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2026 Funko Store · Proyecto académico · Evaluación de Proyecto</p>
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

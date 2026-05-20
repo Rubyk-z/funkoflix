@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Catálogo · Funko Store{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1 class="page-title">Catálogo</h1>
+        <p class="page-subtitle">Explorá toda nuestra colección de Funkos</p>
+    </div>
+</section>
+
+<section class="container section-pad">
+    {% if funkos %}
+        <p class="results-count">{{ funkos.count }} producto{{ funkos.count|pluralize }} disponible{{ funkos.count|pluralize }}</p>
+
+        <div class="funko-grid">
+            {% for funko in funkos %}
+                {% include 'Funkos/card.html' with item=funko %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <h3>Catálogo en preparación 📦</h3>
+            <p>Estamos cargando nuestros Funkos. Volvé pronto para descubrir toda la colección.</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

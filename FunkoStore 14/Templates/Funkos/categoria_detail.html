@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ categoria.nombre }} · Funko Store{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <a href="{% url 'Funkos:categorias' %}" class="back-link">← Volver a categorías</a>
+        <h1 class="page-title">{{ categoria.nombre }}</h1>
+        {% if categoria.descripcion %}
+            <p class="page-subtitle">{{ categoria.descripcion }}</p>
+        {% endif %}
+    </div>
+</section>
+
+<section class="container section-pad">
+    {% if funkos %}
+        <p class="results-count">{{ funkos.count }} producto{{ funkos.count|pluralize }}</p>
+        <div class="funko-grid">
+            {% for funko in funkos %}
+                {% include 'Funkos/card.html' with item=funko %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <h3>Todavía no hay Funkos en esta categoría</h3>
+            <a href="{% url 'Funkos:catalogo' %}" class="btn btn-primary">Ver catálogo completo</a>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

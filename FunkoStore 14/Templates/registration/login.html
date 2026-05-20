@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Iniciar sesión · Funko Store{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="auth-card">
+        <h1 class="auth-title">Iniciar sesión</h1>
+        <p class="auth-subtitle">Bienvenido de vuelta a Funko Store</p>
+
+        {# Si Django redirigió al login porque la página requería auth, mostramos un aviso #}
+        {% if next %}
+            <div class="message message-info" style="margin-bottom: 1rem;">
+                Iniciá sesión para acceder a esta página.
+            </div>
+        {% endif %}
+
+        {# Si el login falló (usuario o contraseña incorrectos) #}
+        {% if form.errors %}
+            <div class="message message-error" style="margin-bottom: 1rem;">
+                Usuario o contraseña incorrectos. Probá de nuevo.
+            </div>
+        {% endif %}
+
+        <form method="post" class="auth-form">
+            {# csrf_token: token de seguridad obligatorio en todo formulario POST #}
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">Usuario</label>
+                <input type="text" name="username" id="{{ form.username.id_for_label }}"
+                       class="form-input" placeholder="Tu nombre de usuario" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password.id_for_label }}">Contraseña</label>
+                <input type="password" name="password" id="{{ form.password.id_for_label }}"
+                       class="form-input" placeholder="Tu contraseña" required>
+            </div>
+
+            {# Campo oculto: si el usuario fue redirigido por @login_required, lo enviamos de vuelta #}
+            <input type="hidden" name="next" value="{{ next }}">
+
+            <button type="submit" class="btn btn-primary btn-large btn-full">Ingresar</button>
+        </form>
+
+        <p class="auth-footer">
+            ¿No tenés cuenta?
+            <a href="{% url 'Funkos:register' %}" class="auth-link">Registrate acá</a>
+        </p>
+    </div>
+</section>
+{% endblock %}
