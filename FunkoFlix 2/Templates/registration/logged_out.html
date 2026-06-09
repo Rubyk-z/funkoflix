@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Sesión cerrada · FunkoFlix{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="auth-card">
+        <h1 class="auth-title">¡Hasta pronto! 👋</h1>
+        <p class="auth-subtitle">Tu sesión se cerró correctamente.</p>
+
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+            <a href="{% url 'Funkos:home' %}" class="btn btn-outline">Volver al inicio</a>
+            <a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión de nuevo</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio · FunkoFlix{% endblock %}
+
+{% block content %}
+    {# Sección hero #}
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <span class="hero-badge">Bienvenido</span>
+            <h1 class="hero-title">Bienvenido a FunkoFlix</h1>
+            <p class="hero-subtitle">
+                Acá podés encontrar todos los Funkos de tus series, películas
+                y videojuegos favoritos.
+            </p>
+            <a href="{% url 'Funkos:catalogo' %}" class="btn btn-primary btn-large">Ver catálogo</a>
+        </div>
+    </section>
+
+    {# Sección de destacados (solo si hay) #}
+    {% if funkos_destacados %}
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">⭐ Exclusivos destacados</h2>
+                <p class="section-subtitle">Las piezas más buscadas por los coleccionistas</p>
+
+                <div class="funko-grid" style="margin-top: 3rem;">
+                    {% for funko in funkos_destacados %}
+                        {% include 'Funkos/card.html' with item=funko %}
+                    {% endfor %}
+                </div>
+
+                <div style="text-align: center; margin-top: 3rem;">
+                    <a href="{% url 'Funkos:exclusivos' %}" class="btn btn-outline btn-large">Ver todos los exclusivos</a>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+
+    {# Si no hay productos no mostramos nada extra: la home queda con solo el hero, limpia. #}
+{% endblock %}

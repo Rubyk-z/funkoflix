@@ -1,0 +1,30 @@
+{# Partial reutilizable: card de Funko. Recibe la variable 'item'. #}
+<a href="{{ item.get_absolute_url }}" class="funko-card">
+    <div class="funko-card-image">
+        {% if item.imagen %}
+            <img src="{{ item.imagen.url }}" alt="{{ item.nombre }}" loading="lazy">
+        {% else %}
+            <div class="funko-card-placeholder">
+                <span>📦</span>
+            </div>
+        {% endif %}
+
+        {% if item.es_exclusivo %}
+            <span class="badge badge-exclusive">EXCLUSIVO</span>
+        {% endif %}
+        {% if not item.en_stock %}
+            <span class="badge badge-soldout">SIN STOCK</span>
+        {% endif %}
+    </div>
+
+    <div class="funko-card-info">
+        <span class="funko-card-franquicia">{{ item.franquicia.nombre }}</span>
+        <h3 class="funko-card-title">{{ item.nombre }}</h3>
+        <div class="funko-card-footer">
+            <span class="funko-card-price">${{ item.precio|floatformat:0 }}</span>
+            <span class="funko-card-rareza rareza-{{ item.rareza }}">
+                {{ item.get_rareza_display }}
+            </span>
+        </div>
+    </div>
+</a>

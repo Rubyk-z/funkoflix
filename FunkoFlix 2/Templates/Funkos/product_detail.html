@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ funko.nombre }} · FunkoFlix{% endblock %}
+
+{% block content %}
+<section class="container product-detail">
+    <a href="{% url 'Funkos:catalogo' %}" class="back-link">← Volver al catálogo</a>
+
+    <div class="product-detail-grid">
+        {# Imagen #}
+        <div class="product-detail-image">
+            {% if funko.imagen %}
+                <img src="{{ funko.imagen.url }}" alt="{{ funko.nombre }}">
+            {% else %}
+                <div class="funko-card-placeholder large">
+                    <span>📦</span>
+                </div>
+            {% endif %}
+
+            {% if funko.es_exclusivo %}
+                <span class="badge badge-exclusive badge-large">⭐ EXCLUSIVO</span>
+            {% endif %}
+        </div>
+
+        {# Info del producto #}
+        <div class="product-detail-info">
+            <span class="product-franquicia">{{ funko.franquicia.nombre }}</span>
+            <h1 class="product-title">{{ funko.nombre }}</h1>
+
+            <div class="product-meta">
+                <span class="product-rareza rareza-{{ funko.rareza }}">
+                    {{ funko.get_rareza_display }}
+                </span>
+                <span class="product-categoria">{{ funko.categoria.nombre }}</span>
+            </div>
+
+            <div class="product-price">${{ funko.precio|floatformat:0 }}</div>
+
+            {% if funko.en_stock %}
+                <p class="product-stock product-stock-ok">
+                    ✓ En stock — {{ funko.stock }} disponible{{ funko.stock|pluralize }}
+                </p>
+            {% else %}
+                <p class="product-stock product-stock-out">
+                    ✗ Sin stock
+                </p>
+            {% endif %}
+
+            <div class="product-description">
+                <h3>Descripción</h3>
+                <p>{{ funko.descripcion }}</p>
+            </div>
+
+            <div class="product-actions">
+                {% if funko.en_stock %}
+                    <button class="btn btn-primary btn-large btn-full" disabled>
+                        🛒 Agregar al carrito (próximamente)
+                    </button>
+                {% else %}
+                    <button class="btn btn-outline btn-large btn-full" disabled>
+                        Sin stock
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {# Productos relacionados #}
+    {% if relacionados %}
+        <section class="related-section">
+            <h2 class="section-title">También de {{ funko.franquicia.nombre }}</h2>
+            <div class="funko-grid">
+                {% for rel in relacionados %}
+                    {% include 'Funkos/card.html' with item=rel %}
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+</section>
+{% endblock %}

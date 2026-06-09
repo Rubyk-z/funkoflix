@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Categorías · FunkoFlix{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1 class="page-title">Categorías</h1>
+        <p class="page-subtitle">Encontrá tus Funkos por temática</p>
+    </div>
+</section>
+
+<section class="container section-pad">
+    {% if categorias %}
+        <div class="categoria-grid">
+            {% for cat in categorias %}
+                <a href="{% url 'Funkos:categoria_detail' slug=cat.slug %}" class="categoria-card">
+                    <div class="categoria-card-icon">
+                        {% if 'serie' in cat.slug %}📺
+                        {% elif 'pelicula' in cat.slug %}🎬
+                        {% elif 'videojuego' in cat.slug %}🎮
+                        {% elif 'cultura' in cat.slug %}🎵
+                        {% else %}📦
+                        {% endif %}
+                    </div>
+                    <h2 class="categoria-card-title">{{ cat.nombre }}</h2>
+                    {% if cat.descripcion %}
+                        <p class="categoria-card-desc">{{ cat.descripcion }}</p>
+                    {% endif %}
+                    <span class="categoria-card-count">
+                        {{ cat.total_funkos }} producto{{ cat.total_funkos|pluralize }}
+                    </span>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <h3>Categorías en camino 📂</h3>
+            <p>Estamos organizando todo para vos. Volvé pronto.</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

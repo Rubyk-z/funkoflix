@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Bienvenido · FunkoFlix{% endblock %}
+
+{% block content %}
+<section class="welcome-screen">
+    <div class="welcome-overlay"></div>
+    <div class="welcome-content">
+        <span class="hero-badge">Bienvenido</span>
+        <h1 class="welcome-title">
+            Coleccioná tu <span class="welcome-accent">cultura pop</span> favorita
+        </h1>
+        <p class="welcome-subtitle">
+            Funkos exclusivos de Netflix, series, películas, videojuegos y más.
+            Iniciá sesión o registrate para descubrir toda la colección.
+        </p>
+
+        <div class="welcome-actions">
+            <a href="{% url 'login' %}" class="btn btn-primary btn-large">Iniciar sesión</a>
+            <a href="{% url 'Funkos:register' %}" class="btn btn-outline btn-large">Crear cuenta</a>
+        </div>
+
+        <p class="welcome-footnote">
+            ¿Sos nuevo? Creá una cuenta gratis en menos de un minuto.
+        </p>
+    </div>
+</section>
+{% endblock %}
